@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuottajat – WildHermes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');</style>
+</head>
+<body class="bg-emerald-50 font-sans">
+
+  <nav class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl">🌾</div>
+        <h1 class="logo-font text-3xl font-bold text-emerald-800">WildHermes</h1>
+      </a>
+      <a href="index.html" class="text-emerald-600 hover:underline">← Takaisin etusivulle</a>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <h1 class="text-5xl font-bold text-center mb-12">Tuottajat</h1>
+
+    <div class="grid md:grid-cols-2 gap-10">
+      <!-- Tuottaja 1 -->
+      <div onclick="openProducer(0)" class="bg-white rounded-3xl p-8 cursor-pointer hover:shadow-xl transition">
+        <div class="flex gap-6">
+          <div class="w-24 h-24 bg-emerald-100 rounded-2xl flex items-center justify-center text-5xl">🌿</div>
+          <div>
+            <h2 class="text-2xl font-bold">Helsingin Marjatila</h2>
+            <p class="text-emerald-700">Espoo • 12 km</p>
+            <p class="mt-3">Tuoreet marjat, hillot ja mehut suoraan pellolta.</p>
+            <button class="mt-6 text-emerald-600 font-medium">Avaa profiili →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lisää tuottajia saman rakenteen mukaan -->
+      <div onclick="openProducer(1)" class="bg-white rounded-3xl p-8 cursor-pointer hover:shadow-xl transition">
+        <div class="flex gap-6">
+          <div class="w-24 h-24 bg-amber-100 rounded-2xl flex items-center justify-center text-5xl">🐔</div>
+          <div>
+            <h2 class="text-2xl font-bold">Turun Luomukana</h2>
+            <p class="text-emerald-700">Turku • 45 km</p>
+            <p class="mt-3">Luomumunat, broileri ja kana.</p>
+            <button class="mt-6 text-emerald-600 font-medium">Avaa profiili →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openProducer(index) {
+      const producers = [
+        {name:"Helsingin Marjatila", desc:"Tuoreet marjat suoraan pellolta. Tilaa mansikoita, mustikoita ja vadelmia sesongin mukaan."},
+        {name:"Turun Luomukana", desc:"Aitoja luomumunia ja lihanlaatua. Toimitus pääkaupunkiseudulle mahdollinen."}
+      ];
+      alert(`📍 ${producers[index].name}\n\n${producers[index].desc}\n\nKlikkaa "Tilaa tuotteita" oikeassa versiossa.`);
+    }
+  </script>
+</body>
+</html>
