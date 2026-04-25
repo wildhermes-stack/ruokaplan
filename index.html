@@ -10,174 +10,105 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
     .logo-font { font-family: 'Playfair Display', serif; }
-    #map { height: 500px; border-radius: 12px; }
+    #map { height: 480px; border-radius: 12px; }
   </style>
 </head>
-<body class="bg-emerald-50 font-sans">
+<body class="bg-emerald-50">
 
-  <!-- NAVIGOINTI -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
+  <!-- Navigointi (sama kuin ennen) -->
+  <nav class="bg-white shadow sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl">🌾</div>
-        <h1 class="logo-font text-3xl font-bold text-emerald-800 tracking-tight">WildHermes</h1>
+        <h1 class="logo-font text-3xl font-bold text-emerald-800">WildHermes</h1>
       </div>
-      <div class="flex gap-8 text-lg">
-        <a href="#map" class="hover:text-emerald-600">Kartta</a>
-        <a href="#" class="hover:text-emerald-600">Tuottajat</a>
-        <a href="#" class="hover:text-emerald-600">Tarjoukset</a>
-        <a href="#" onclick="showRegisterModal()" class="hover:text-emerald-600">Rekisteröidy</a>
+      <div class="flex gap-8">
+        <a href="index.html" class="hover:text-emerald-600">Etusivu</a>
+        <a href="#tuotteet" class="hover:text-emerald-600">Tuotteet</a>
+        <a href="producers.html" class="hover:text-emerald-600">Tuottajat</a>
       </div>
-      <button onclick="showRegisterModal()" 
-              class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-medium transition">
-        Kirjaudu / Rekisteröidy
-      </button>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleCart()" class="relative">
+          🛒 <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+        </button>
+        <button onclick="showRegisterModal()" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl">Kirjaudu</button>
+      </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <header class="bg-emerald-700 text-white py-24">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-6xl font-bold logo-font mb-6">Ruokaa suoraan pellolta pöytään</h2>
-      <p class="text-2xl mb-10 max-w-2xl mx-auto">Kysyntä ja tarjonta kohtaavat kartalla.<br>Tuottajat ja kuluttajat yhdistyvät WildHermesissä.</p>
-      
-      <div class="max-w-xl mx-auto bg-white rounded-3xl p-2 flex items-center">
-        <input id="searchInput" type="text" placeholder="Etsi tuottajia, marjoja, kananmunia..." 
-               class="flex-1 px-6 py-4 text-black text-lg outline-none rounded-3xl">
-        <button onclick="searchMap()" 
-                class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-3xl font-medium">Hae kartalta</button>
-      </div>
-    </div>
-  </header>
+  <!-- Hero + Kartta (lyhennetty) -->
+  <!-- ... (voit kopioida edellisestä versiosta) ... -->
 
-  <!-- KARTTA-OSIO -->
-  <section id="map" class="max-w-7xl mx-auto px-6 py-16">
-    <h2 class="text-4xl font-bold text-center mb-4">Löydä tuottajia lähelläsi</h2>
-    <p class="text-center text-emerald-700 mb-8">Klikkaa kartalta tai zoomaa – näet tuoreet tarjoukset reaaliajassa</p>
-    <div id="mapContainer" class="shadow-2xl"></div>
+  <!-- TUOTELISTA -->
+  <section id="tuotteet" class="max-w-7xl mx-auto px-6 py-16">
+    <h2 class="text-4xl font-bold text-center mb-10">Tuoreet tuotteet juuri nyt</h2>
+    <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
   </section>
-
-  <!-- MITEN SE TOIMII -->
-  <section class="bg-white py-16">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-12">Näin kysyntä ja tarjonta toimivat</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-        <div class="text-center">
-          <div class="text-5xl mb-4">🌱</div>
-          <h3 class="font-bold text-xl mb-2">Tuottaja</h3>
-          <p class="text-gray-600">Listaat tuotteesi, saat tilauksia suoraan kuluttajilta</p>
-        </div>
-        <div class="text-center">
-          <div class="text-5xl mb-4">🛒</div>
-          <h3 class="font-bold text-xl mb-2">Kuluttaja</h3>
-          <p class="text-gray-600">Löydät lähellä olevat tuottajat ja tilaat tuoretta ruokaa</p>
-        </div>
-        <div class="text-center">
-          <div class="text-5xl mb-4">📍</div>
-          <h3 class="font-bold text-xl mb-2">Kartta</h3>
-          <p class="text-gray-600">Kysyntä ja tarjonta kohtaavat reaaliajassa</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- REKISTERÖINTI MODAL -->
-  <div id="registerModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-    <div class="bg-white rounded-3xl max-w-md w-full mx-4 p-8">
-      <h2 class="text-3xl font-bold mb-6">Rekisteröidy WildHermesiin</h2>
-      <form onsubmit="handleRegister(event)">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium mb-1">Nimi</label>
-            <input type="text" id="regName" required class="w-full px-4 py-3 border rounded-2xl">
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Sähköposti</label>
-            <input type="email" id="regEmail" required class="w-full px-4 py-3 border rounded-2xl">
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Salasana</label>
-            <input type="password" id="regPass" required class="w-full px-4 py-3 border rounded-2xl">
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Olen</label>
-            <select id="regRole" class="w-full px-4 py-3 border rounded-2xl">
-              <option value="tuottaja">Tuottaja (myyn ruokaa)</option>
-              <option value="kuluttaja">Kuluttaja (ostan suoraan)</option>
-            </select>
-          </div>
-          <button type="submit" 
-                  class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-medium text-lg">
-            Rekisteröidy ilmaiseksi
-          </button>
-        </div>
-      </form>
-      <button onclick="hideRegisterModal()" class="mt-6 text-gray-500 w-full">Sulje</button>
-    </div>
-  </div>
 
   <script>
-    // Tailwind config
-    tailwind.config = { content: ["./**/*.{html,js}"] }
+    // Mock tuotteet
+    const products = [
+      { id:1, name:"Tuore mansikat 1kg", producer:"Helsingin Marjatila", price:6.90, unit:"kg", img:"🍓" },
+      { id:2, name:"Luomumunat 12 kpl", producer:"Turun Luomukana", price:4.50, unit:"kpl", img:"🥚" },
+      { id:3, name:"Tuore leipäjuusto 400g", producer:"Tampereen Juusto", price:5.80, unit:"pkt", img:"🧀" },
+      { id:4, name:"Uudet perunat 2kg", producer:"Oulun Vihannes", price:3.90, unit:"kg", img:"🥔" }
+    ];
 
-    // Leaflet kartta
-    let map;
-    function initMap() {
-      map = L.map('mapContainer').setView([65.0, 25.0], 5); // Suomi keskipiste
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = products.map(p => `
+        <div class="bg-white rounded-3xl overflow-hidden shadow hover:shadow-xl transition">
+          <div class="h-48 bg-emerald-100 flex items-center justify-center text-6xl">${p.img}</div>
+          <div class="p-6">
+            <h3 class="font-bold">${p.name}</h3>
+            <p class="text-emerald-700 text-sm">${p.producer}</p>
+            <div class="flex justify-between items-end mt-4">
+              <div>
+                <span class="text-2xl font-bold">${p.price} €</span>
+                <span class="text-sm text-gray-500">/${p.unit}</span>
+              </div>
+              <button onclick="addToCart(${p.id})" 
+                      class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-2xl text-sm">
+                Lisää koriin
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-      }).addTo(map);
+    // Ostoskori
+    let cart = [];
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      cart.push(product);
+      document.getElementById('cartCount').textContent = cart.length;
+      alert(`${product.name} lisätty koriin!`);
+    }
 
-      // Mock-tuottajat (Suomi)
-      const producers = [
-        { lat: 60.1699, lng: 24.9384, name: "Helsingin Marjatila", product: "Tuoreet mansikat & mustikat", dist: "12 km" },
-        { lat: 60.4518, lng: 22.2666, name: "Turun Luomukana", product: "Luomumunat & broileri", dist: "45 km" },
-        { lat: 61.4991, lng: 23.7664, name: "Tampereen Juusto", product: "Tuoreet juustot", dist: "8 km" },
-        { lat: 65.0121, lng: 25.4651, name: "Oulun Vihannes", product: "Perunat & porkkanat", dist: "22 km" }
-      ];
-
-      producers.forEach(p => {
-        const marker = L.marker([p.lat, p.lng]).addTo(map);
-        marker.bindPopup(`
-          <b>${p.name}</b><br>
-          ${p.product}<br>
-          <span class="text-emerald-600">${p.dist} päässä</span><br><br>
-          <button onclick="orderFromProducer('${p.name}')" class="bg-emerald-600 text-white px-4 py-1 rounded-xl text-sm">Tilaa nyt</button>
-        `);
+    function toggleCart() {
+      if (cart.length === 0) {
+        alert("Kori on tyhjä");
+        return;
+      }
+      let summary = "🛒 Ostoskori:\n\n";
+      let total = 0;
+      cart.forEach(item => {
+        summary += `${item.name} – ${item.price} €\n`;
+        total += item.price;
       });
-    }
-
-    // Rekisteröinti
-    function showRegisterModal() {
-      document.getElementById('registerModal').classList.remove('hidden');
-    }
-    function hideRegisterModal() {
-      document.getElementById('registerModal').classList.add('hidden');
-    }
-    function handleRegister(e) {
-      e.preventDefault();
-      const name = document.getElementById('regName').value;
-      const role = document.getElementById('regRole').value;
-      alert(`🎉 Tervetuloa WildHermesiin, ${name}!\nOlet nyt rekisteröitynyt roolilla: ${role.toUpperCase()}\n\n(Kartta ja tilaukset toimivat jo demossa)`);
-      hideRegisterModal();
-    }
-
-    // Haku
-    function searchMap() {
-      const query = document.getElementById('searchInput').value;
-      if (query) {
-        alert(`🔍 Haetaan: "${query}"\n\nKartta zoomaa automaattisesti lähellä oleviin tuottajiin (demo)`);
-        map.setView([60.1699, 24.9384], 10);
+      summary += `\nYhteensä: ${total.toFixed(2)} €\n\nHaluatko siirtyä kassalle?`;
+      if (confirm(summary)) {
+        alert("✅ Tilaus vahvistettu! (Tämä on demo – oikeassa versiossa mennään maksuun)");
+        cart = [];
+        document.getElementById('cartCount').textContent = 0;
       }
     }
 
-    function orderFromProducer(name) {
-      alert(`✅ Tilaus aloitettu: ${name}\n\nVoit nyt chatata tuottajan kanssa ja sopia toimituksesta.`);
-    }
-
-    // Käynnistä kaikki
-    window.onload = initMap;
+    window.onload = () => {
+      renderProducts();
+      // initMap() jos haluat kartan tähän
+    };
   </script>
 </body>
 </html>
